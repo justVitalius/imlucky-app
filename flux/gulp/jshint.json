@@ -1,0 +1,9 @@
+{
+  "undef": true,
+  "unused": true,
+  "predef": [ "require", "window", "console", "$", "module" ],
+  "strict": true,
+  "camelcase": true,
+  "funcscope": true,
+  "maxdepth": 2
+}
