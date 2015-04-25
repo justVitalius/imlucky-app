@@ -1,13 +1,14 @@
 var React = window.React = require('react');
-var author_api = require('./author_api');
 
-var AuthorsListApp = React.createFactory(require('./authors_controller.js'));
+var authorApi = require('./authors/author_api'),
+    bookApi = require('./books/book_api');
 
-console.log('start timer');
+var AuthorsListApp = require('./app_controller.js');
+
 setTimeout(function(){
-  author_api.getAuthorData();
-  console.log('stop timer');
-}, 200);
+  authorApi.getAuthorData();
+  bookApi.getData();
+}, 10);
 
 
 React.render(

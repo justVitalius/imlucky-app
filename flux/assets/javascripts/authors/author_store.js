@@ -1,20 +1,25 @@
-var AppDispatcher = require('./app_dispatcher');
+var AppDispatcher = require('./../app_dispatcher');
 var EventEmitter = require('events').EventEmitter;
-var Constants = require('./author_constants');
+var Constants = require('./../app_constants');
+var Utils = require('./../utils');
 var _ = require('underscore');
 
 // Define initial data points
-var _authors = [], _selected = null;
+var _authors = [], _selected = {};
 
 // Method to load product data from mock API
 function loadAuthorData(data) {
   _authors = data;
-  _selected = data[0];
 }
 
 // Method to set the currently selected product variation
 function setSelected(id) {
-  _selected = _.find(_authors, {id: parseInt(id)});
+  _selected = _.find(_authors, {id: parseInt(id)}) || {};
+}
+
+function selectRandomAuthor(){
+  var randomId = Utils.random(1, _authors.length);
+  setSelected(randomId);
 }
 
 
@@ -49,21 +54,24 @@ var AuthorStore = _.extend({}, EventEmitter.prototype, {
 });
 
 // Register callback with AppDispatcher
-AppDispatcher.register(function(payload) {
+AuthorStore.dispatch = AppDispatcher.register(function(payload) {
   var action = payload.action;
   var text;
 
   switch(action.actionType) {
 
-    // Respond to RECEIVE_DATA action
     case Constants.RECEIVE_AUTHORS:
       loadAuthorData(action.data);
       break;
 
-    // Respond to SELECT_PRODUCT action
     case Constants.SELECT_AUTHOR:
       setSelected(action.data);
       break;
+
+    case Constants.LUCKY_CLICK:
+      selectRandomAuthor();
+      break;
+
 
     default:
       return true;

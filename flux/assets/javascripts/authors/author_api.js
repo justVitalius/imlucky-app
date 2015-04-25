@@ -1,4 +1,4 @@
-var Actions = require('./author_actions'),
+var Actions = require('./../app_actions'),
     authorData = require('./author_data');
 
 module.exports = {
